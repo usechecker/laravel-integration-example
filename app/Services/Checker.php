@@ -33,11 +33,12 @@ class Checker
             logger()->error('Checker service returned a client error. Error: ' . $response->body());
         }
 
+        // log the error
+        logger()->error('Checker service returned an unexpected response. Response: ' . $response->body());
         
         // If the checker service returned an unexpected response, we assume the email is not temporary
         // This is a safe assumption because we don't want to block users from signing up
         // If you want to block users from signing up in case of an error, you can return true here
-        logger()->error('Checker service returned an unexpected response. Response: ' . $response->body());
         return false;
     }
 }

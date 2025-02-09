@@ -47,10 +47,12 @@ class Checker
             logger()->error('Checker service returned a client error. Error: ' . $response->body());
         }
 
+        // log the error
+        logger()->error('Checker service returned an unexpected response. Response: ' . $response->body());
+        
         // If the checker service returned an unexpected response, we assume the email is not temporary
         // This is a safe assumption because we don't want to block users from signing up
         // If you want to block users from signing up in case of an error, you can return true here
-        logger()->error('Checker service returned an unexpected response. Response: ' . $response->body());
         return false;
     }
 }
@@ -74,7 +76,15 @@ return [
 ];
 ```
 
-### Step 3: Use the Checker Service in Registration
+### Step 3: Add the Configuration to Your `.env` File
+Add the following configuration to your `.env` file:
+
+```env
+CHECKER_URL=https://app.usechecker.com
+CHECKER_API_TOKEN=your-api-token
+```
+
+### Step 4: Use the Checker Service in Registration
 Modify your `RegisteredUserController.php` to check the email before registering a user:
 
 ```php
